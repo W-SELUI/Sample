@@ -4,8 +4,20 @@ import java.util.List;
 
 public class MergeSort {
 
-    public static void sort(List<University> list,
-                            Comparator<University> comparator) {
+    public static void sort(
+            List<University> list,
+            Comparator<University> comparator) {
+
+        sort(
+                list,
+                comparator,
+                new SortMetrics());
+    }
+
+    public static void sort(
+            List<University> list,
+            Comparator<University> comparator,
+            SortMetrics metrics) {
 
         if (list.size() <= 1) {
             return;
@@ -17,42 +29,65 @@ public class MergeSort {
                 new ArrayList<>(list.subList(0, mid));
 
         List<University> right =
-                new ArrayList<>(list.subList(mid, list.size()));
+                new ArrayList<>(list.subList(mid,
+                        list.size()));
 
-        sort(left, comparator);
-        sort(right, comparator);
+        sort(left, comparator, metrics);
 
-        merge(list, left, right, comparator);
+        sort(right, comparator, metrics);
+
+        merge(
+                list,
+                left,
+                right,
+                comparator,
+                metrics);
     }
 
-    private static void merge(List<University> list,
-                              List<University> left,
-                              List<University> right,
-                              Comparator<University> comparator) {
+    private static void merge(
+            List<University> list,
+            List<University> left,
+            List<University> right,
+            Comparator<University> comparator,
+            SortMetrics metrics) {
 
         int i = 0;
         int j = 0;
         int k = 0;
 
-        while (i < left.size() && j < right.size()) {
+        while (i < left.size()
+                && j < right.size()) {
 
-            if (comparator.compare(left.get(i), right.get(j)) <= 0) {
+            metrics.incrementComparisons();
+
+            if (comparator.compare(
+                    left.get(i),
+                    right.get(j)) <= 0) {
 
                 list.set(k++, left.get(i++));
+
+                metrics.incrementMoves();
+
             } else {
 
                 list.set(k++, right.get(j++));
+
+                metrics.incrementMoves();
             }
         }
 
         while (i < left.size()) {
 
             list.set(k++, left.get(i++));
+
+            metrics.incrementMoves();
         }
 
         while (j < right.size()) {
 
             list.set(k++, right.get(j++));
+
+            metrics.incrementMoves();
         }
     }
 }
