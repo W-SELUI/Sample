@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class RaceGUI extends JFrame {
@@ -14,18 +15,60 @@ public class RaceGUI extends JFrame {
 
     public RaceGUI() {
 
-        setTitle("Algorithm Race");
+        setTitle(" Algorithm Grand Prix");
 
-        setSize(900, 600);
+        setSize(1000, 650);
 
         setDefaultCloseOperation(
                 JFrame.EXIT_ON_CLOSE);
 
         setLayout(new BorderLayout());
 
+        getContentPane().setBackground(
+                new Color(245, 245, 245));
+
+        JLabel titleLabel =
+                new JLabel(
+                        " ALGORITHM GRAND PRIX ",
+                        SwingConstants.CENTER);
+
+        titleLabel.setForeground(
+                Color.BLACK);
+
+        titleLabel.setFont(
+                new Font(
+                        "Arial",
+                        Font.BOLD,
+                        26));
+
+        titleLabel.setBorder(
+                new EmptyBorder(
+                        10,
+                        10,
+                        10,
+                        10));
+
+        add(
+                titleLabel,
+                BorderLayout.NORTH);
+
         JPanel racePanel =
                 new JPanel(
-                        new GridLayout(4, 1));
+                        new GridLayout(
+                                4,
+                                1,
+                                10,
+                                10));
+
+        racePanel.setBackground(
+                Color.WHITE);
+
+        racePanel.setBorder(
+                new EmptyBorder(
+                        10,
+                        15,
+                        10,
+                        15));
 
         builtInBar =
                 new JProgressBar(0, 100);
@@ -43,6 +86,42 @@ public class RaceGUI extends JFrame {
         mergeBar.setStringPainted(true);
         insertionBar.setStringPainted(true);
         bubbleBar.setStringPainted(true);
+
+        builtInBar.setString(
+                "Built-In");
+
+        mergeBar.setString(
+                "Merge");
+
+        insertionBar.setString(
+                "Insertion");
+
+        bubbleBar.setString(
+                "Bubble");
+
+        builtInBar.setForeground(
+                new Color(
+                        46,
+                        204,
+                        113));
+
+        mergeBar.setForeground(
+                new Color(
+                        52,
+                        152,
+                        219));
+
+        insertionBar.setForeground(
+                new Color(
+                        241,
+                        196,
+                        15));
+
+        bubbleBar.setForeground(
+                new Color(
+                        231,
+                        76,
+                        60));
 
         racePanel.add(
                 createLane(
@@ -66,20 +145,51 @@ public class RaceGUI extends JFrame {
 
         add(
                 racePanel,
-                BorderLayout.NORTH);
+                BorderLayout.WEST);
 
         resultsArea =
                 new JTextArea();
 
         resultsArea.setEditable(false);
 
+        resultsArea.setBackground(
+                Color.WHITE);
+
+        resultsArea.setForeground(
+                Color.BLACK);
+
+        resultsArea.setFont(
+                new Font(
+                        "Consolas",
+                        Font.PLAIN,
+                        18));
+
+        JScrollPane scrollPane =
+                new JScrollPane(
+                        resultsArea);
+
         add(
-                new JScrollPane(resultsArea),
+                scrollPane,
                 BorderLayout.CENTER);
 
         startButton =
                 new JButton(
-                        "START RACE");
+                        "🚦 START GRAND PRIX");
+
+        startButton.setBackground(
+                new Color(
+                        46,
+                        204,
+                        113));
+
+        startButton.setForeground(
+                Color.WHITE);
+
+        startButton.setFont(
+                new Font(
+                        "Arial",
+                        Font.BOLD,
+                        20));
 
         add(
                 startButton,
@@ -96,11 +206,29 @@ public class RaceGUI extends JFrame {
 
         JPanel panel =
                 new JPanel(
-                        new BorderLayout());
+                        new BorderLayout(
+                                10,
+                                10));
+
+        panel.setBackground(
+                Color.WHITE);
+
+        JLabel laneLabel =
+                new JLabel(
+                        label);
+
+        laneLabel.setForeground(
+                Color.BLACK);
+
+        laneLabel.setFont(
+                new Font(
+                        "Arial",
+                        Font.BOLD,
+                        16));
 
         panel.add(
-                new JLabel(label),
-                BorderLayout.WEST);
+                laneLabel,
+                BorderLayout.NORTH);
 
         panel.add(
                 bar,
@@ -151,66 +279,90 @@ public class RaceGUI extends JFrame {
         return bubbleBar;
     }
 
-    public void animateRace(
-        long builtInTime,
-        long mergeTime,
-        long insertionTime,
-        long bubbleTime) {
+    public void showCountdown() {
 
-                long maxTime =
-                        Math.max(
-                                Math.max(builtInTime, mergeTime),
-                                Math.max(insertionTime, bubbleTime));
+        try {
 
-                new Thread(() -> {
+            for (int i = 3; i >= 1; i--) {
 
-                        for (int i = 0; i <= 100; i++) {
+                resultsArea.setText(
+                        " RACE STARTING IN...\n\n"
+                                + i);
 
-                        final int progress = i;
+                Thread.sleep(1000);
+            }
 
-                        SwingUtilities.invokeLater(() -> {
+            resultsArea.setText(
+                    " GO!");
 
-                                builtInBar.setValue(
-                                        (int) (progress
-                                                * ((double) maxTime
-                                                / builtInTime)));
+            Thread.sleep(1000);
 
-                                mergeBar.setValue(
-                                        (int) (progress
-                                                * ((double) maxTime
-                                                / mergeTime)));
+            resultsArea.setText("");
 
-                                insertionBar.setValue(
-                                        (int) (progress
-                                                * ((double) maxTime
-                                                / insertionTime)));
+        } catch (InterruptedException e) {
 
-                                bubbleBar.setValue(
-                                        progress);
-
-                                if (builtInBar.getValue() > 100) {
-                                builtInBar.setValue(100);
-                                }
-
-                                if (mergeBar.getValue() > 100) {
-                                mergeBar.setValue(100);
-                                }
-
-                                if (insertionBar.getValue() > 100) {
-                                insertionBar.setValue(100);
-                                }
-                        });
-
-                        try {
-
-                                Thread.sleep(40);
-
-                        } catch (InterruptedException e) {
-
-                                e.printStackTrace();
-                        }
-                        }
-
-                }).start();
+            e.printStackTrace();
         }
+    }
+
+    public void animateRace(
+            long builtInTime,
+            long mergeTime,
+            long insertionTime,
+            long bubbleTime) {
+
+        long maxTime =
+                Math.max(
+                        Math.max(
+                                builtInTime,
+                                mergeTime),
+                        Math.max(
+                                insertionTime,
+                                bubbleTime));
+
+        new Thread(() -> {
+
+            for (int i = 0; i <= 100; i++) {
+
+                final int progress = i;
+
+                SwingUtilities.invokeLater(() -> {
+
+                    builtInBar.setValue(
+                            Math.min(
+                                    100,
+                                    (int) (progress *
+                                            ((double) maxTime
+                                                    / builtInTime))));
+
+                    mergeBar.setValue(
+                            Math.min(
+                                    100,
+                                    (int) (progress *
+                                            ((double) maxTime
+                                                    / mergeTime))));
+
+                    insertionBar.setValue(
+                            Math.min(
+                                    100,
+                                    (int) (progress *
+                                            ((double) maxTime
+                                                    / insertionTime))));
+
+                    bubbleBar.setValue(
+                            progress);
+                });
+
+                try {
+
+                    Thread.sleep(40);
+
+                } catch (InterruptedException e) {
+
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
+    }
 }

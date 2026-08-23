@@ -14,6 +14,8 @@ public class RaceAnimationDemo {
 
                     new Thread(() -> {
 
+                        gui.showCountdown();
+
                         gui.clearResults();
 
                         try {
@@ -86,35 +88,37 @@ public class RaceAnimationDemo {
                                 merge.getExecutionTime(),
                                 insertion.getExecutionTime(),
                                 bubble.getExecutionTime());
+
+                                Thread.sleep(4500);
             
                             gui.appendResult(
-                                    "🏁 FINAL STANDINGS");
+                                    " FINAL STANDINGS");
 
                             gui.appendResult("");
 
                             gui.appendResult(
-                                    "🥇 1st: "
+                                    " 1st: "
                                             + results.get(0).getAlgorithmName()
                                             + " - "
                                             + results.get(0).getExecutionTime()
                                             + " ns");
 
                             gui.appendResult(
-                                    "🥈 2nd: "
+                                    " 2nd: "
                                             + results.get(1).getAlgorithmName()
                                             + " - "
                                             + results.get(1).getExecutionTime()
                                             + " ns");
 
                             gui.appendResult(
-                                    "🥉 3rd: "
+                                    " 3rd: "
                                             + results.get(2).getAlgorithmName()
                                             + " - "
                                             + results.get(2).getExecutionTime()
                                             + " ns");
 
                             gui.appendResult(
-                                    "4th: "
+                                    " 4th: "
                                             + results.get(3).getAlgorithmName()
                                             + " - "
                                             + results.get(3).getExecutionTime()
@@ -123,8 +127,9 @@ public class RaceAnimationDemo {
                             gui.appendResult("");
 
                             gui.appendResult(
-                                    "🏆 Winner: "
+                                    " Winner: "
                                             + results.get(0).getAlgorithmName());
+
 
                         } catch (InterruptedException ex) {
 
