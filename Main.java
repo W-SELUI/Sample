@@ -8,7 +8,8 @@ public class Main {
                 CSVReader.loadUniversities(
                         "World University Rankings 2023-Cleaned.csv");
 
-        CounterStatisticsExporter
-                .exportStatistics(universities);
+        StructureStatisticsExporter
+                .exportStatistics(
+                        universities);
     }
 }
