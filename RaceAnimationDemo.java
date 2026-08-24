@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RaceAnimationDemo {
@@ -14,6 +15,8 @@ public class RaceAnimationDemo {
 
                     new Thread(() -> {
 
+                        gui.disableStartButton();
+
                         gui.showCountdown();
 
                         gui.clearResults();
@@ -24,29 +27,56 @@ public class RaceAnimationDemo {
                                     CSVReader.loadUniversities(
                                             "World University Rankings 2023-Cleaned.csv");
 
+                            Comparator<University> comparator;
+
+                            String selection =
+                                    gui.getSelectedComparator();
+
+                            switch (selection) {
+
+                                case "Rank":
+                                    comparator =
+                                            new RankComparator();
+                                    break;
+
+                                case "Score":
+                                    comparator =
+                                            new ScoreComparator();
+                                    break;
+
+                                case "Location":
+                                    comparator =
+                                            new LocationComparator();
+                                    break;
+
+                                default:
+                                    comparator =
+                                            new NameComparator();
+                            }
+
                             SortRaceThread insertion =
                                     new SortRaceThread(
                                             "Insertion",
                                             universities,
-                                            new NameComparator());
+                                            comparator);
 
                             SortRaceThread bubble =
                                     new SortRaceThread(
                                             "Bubble",
                                             universities,
-                                            new NameComparator());
+                                            comparator);
 
                             SortRaceThread merge =
                                     new SortRaceThread(
                                             "Merge",
                                             universities,
-                                            new NameComparator());
+                                            comparator);
 
                             SortRaceThread builtIn =
                                     new SortRaceThread(
                                             "BuiltIn",
                                             universities,
-                                            new NameComparator());
+                                            comparator);
 
                             insertion.start();
                             bubble.start();
@@ -84,41 +114,47 @@ public class RaceAnimationDemo {
                             Collections.sort(results);
 
                             gui.animateRace(
-                                builtIn.getExecutionTime(),
-                                merge.getExecutionTime(),
-                                insertion.getExecutionTime(),
-                                bubble.getExecutionTime());
+                                    builtIn.getExecutionTime(),
+                                    merge.getExecutionTime(),
+                                    insertion.getExecutionTime(),
+                                    bubble.getExecutionTime());
 
-                                Thread.sleep(4500);
-            
+                            Thread.sleep(4500);
+
                             gui.appendResult(
-                                    " FINAL STANDINGS");
+                                    "Sorted By: "
+                                            + selection);
 
                             gui.appendResult("");
 
                             gui.appendResult(
-                                    " 1st: "
+                                    "FINAL STANDINGS");
+
+                            gui.appendResult("");
+
+                            gui.appendResult(
+                                    "1st: "
                                             + results.get(0).getAlgorithmName()
                                             + " - "
                                             + results.get(0).getExecutionTime()
                                             + " ns");
 
                             gui.appendResult(
-                                    " 2nd: "
+                                    "2nd: "
                                             + results.get(1).getAlgorithmName()
                                             + " - "
                                             + results.get(1).getExecutionTime()
                                             + " ns");
 
                             gui.appendResult(
-                                    " 3rd: "
+                                    "3rd: "
                                             + results.get(2).getAlgorithmName()
                                             + " - "
                                             + results.get(2).getExecutionTime()
                                             + " ns");
 
                             gui.appendResult(
-                                    " 4th: "
+                                    "4th: "
                                             + results.get(3).getAlgorithmName()
                                             + " - "
                                             + results.get(3).getExecutionTime()
@@ -127,18 +163,25 @@ public class RaceAnimationDemo {
                             gui.appendResult("");
 
                             gui.appendResult(
-                                    " Winner: "
+                                    "Winner: "
                                             + results.get(0).getAlgorithmName());
 
+                            gui.enableStartButton();
 
                         } catch (InterruptedException ex) {
 
                             ex.printStackTrace();
+
+                            gui.enableStartButton();
                         }
 
                     }).start();
+                });
 
+        gui.getResetButton()
+                .addActionListener(e -> {
+
+                    gui.resetRace();
                 });
     }
-    
 }

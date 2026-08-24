@@ -12,6 +12,9 @@ public class RaceGUI extends JFrame {
     private JTextArea resultsArea;
 
     private JButton startButton;
+    private JButton resetButton;
+
+    private JComboBox<String> comparatorBox;
 
     public RaceGUI() {
 
@@ -173,14 +176,18 @@ public class RaceGUI extends JFrame {
                 BorderLayout.CENTER);
 
         startButton =
-                new JButton(
-                        "🚦 START GRAND PRIX");
+        new JButton(
+                "🚦 START GRAND PRIX");
+
+        resetButton =
+        new JButton(
+                "RESET");
 
         startButton.setBackground(
-                new Color(
-                        46,
-                        204,
-                        113));
+        new Color(
+                46,
+                204,
+                113));
 
         startButton.setForeground(
                 Color.WHITE);
@@ -191,8 +198,61 @@ public class RaceGUI extends JFrame {
                         Font.BOLD,
                         20));
 
+        String[] options = {
+                "Name",
+                "Rank",
+                "Score",
+                "Location"
+        };
+
+        comparatorBox =
+                new JComboBox<>(
+                        options);
+
+        comparatorBox.setFont(
+                new Font(
+                        "Arial",
+                        Font.BOLD,
+                        14));
+
+        JPanel bottomPanel =
+                new JPanel(
+                        new BorderLayout());
+
+        JPanel selectionPanel =
+                new JPanel();
+
+        selectionPanel.add(
+                new JLabel(
+                        "Sort By:"));
+
+        selectionPanel.add(
+                comparatorBox);
+
+        bottomPanel.add(
+                selectionPanel,
+                BorderLayout.NORTH);
+
+        JPanel buttonPanel =
+                new JPanel(
+                        new GridLayout(
+                                1,
+                                2,
+                                10,
+                                0));
+
+        buttonPanel.add(
+                startButton);
+
+        buttonPanel.add(
+                resetButton);
+
+        bottomPanel.add(
+                buttonPanel,
+                BorderLayout.SOUTH);
+
         add(
-                startButton,
+                bottomPanel,
                 BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
@@ -240,6 +300,11 @@ public class RaceGUI extends JFrame {
     public JButton getStartButton() {
 
         return startButton;
+    }
+
+    public JButton getResetButton() {
+
+         return resetButton;
     }
 
     public void clearResults() {
@@ -365,4 +430,36 @@ public class RaceGUI extends JFrame {
 
         }).start();
     }
+
+        public String getSelectedComparator() {
+
+                return (String)
+                comparatorBox.getSelectedItem();
+                }
+
+                public void resetRace() {
+
+        resultsArea.setText("");
+
+        builtInBar.setValue(0);
+        mergeBar.setValue(0);
+        insertionBar.setValue(0);
+        bubbleBar.setValue(0);
+        }
+
+        public void disableStartButton() {
+
+        startButton.setEnabled(false);
+
+        startButton.setText(
+                "RACE IN PROGRESS...");
+        }
+
+        public void enableStartButton() {
+
+        startButton.setEnabled(true);
+
+        startButton.setText(
+                "🚦 START GRAND PRIX");
+        }
 }
