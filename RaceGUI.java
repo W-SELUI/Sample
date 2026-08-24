@@ -370,11 +370,11 @@ public class RaceGUI extends JFrame {
         }
     }
 
-    public void animateRace(
-            long builtInTime,
-            long mergeTime,
-            long insertionTime,
-            long bubbleTime) {
+        public void animateRace(
+                long builtInTime,
+                long mergeTime,
+                long insertionTime,
+                long bubbleTime) {
 
         long maxTime =
                 Math.max(
@@ -387,49 +387,53 @@ public class RaceGUI extends JFrame {
 
         new Thread(() -> {
 
-            for (int i = 0; i <= 100; i++) {
+                for (int i = 0; i <= 100; i++) {
 
                 final int progress = i;
 
                 SwingUtilities.invokeLater(() -> {
 
-                    builtInBar.setValue(
-                            Math.min(
-                                    100,
-                                    (int) (progress *
-                                            ((double) maxTime
-                                                    / builtInTime))));
+                        builtInBar.setValue(
+                                Math.min(
+                                        100,
+                                        (int) (progress
+                                                * ((double) maxTime
+                                                / builtInTime))));
 
-                    mergeBar.setValue(
-                            Math.min(
-                                    100,
-                                    (int) (progress *
-                                            ((double) maxTime
-                                                    / mergeTime))));
+                        mergeBar.setValue(
+                                Math.min(
+                                        100,
+                                        (int) (progress
+                                                * ((double) maxTime
+                                                / mergeTime))));
 
-                    insertionBar.setValue(
-                            Math.min(
-                                    100,
-                                    (int) (progress *
-                                            ((double) maxTime
-                                                    / insertionTime))));
+                        insertionBar.setValue(
+                                Math.min(
+                                        100,
+                                        (int) (progress
+                                                * ((double) maxTime
+                                                / insertionTime))));
 
-                    bubbleBar.setValue(
-                            progress);
+                        bubbleBar.setValue(
+                                Math.min(
+                                        100,
+                                        (int) (progress
+                                                * ((double) maxTime
+                                                / bubbleTime))));
                 });
 
                 try {
 
-                    Thread.sleep(40);
+                        Thread.sleep(40);
 
                 } catch (InterruptedException e) {
 
-                    e.printStackTrace();
+                        e.printStackTrace();
                 }
-            }
+                }
 
-        }).start();
-    }
+          }).start();
+        }
 
         public String getSelectedComparator() {
 
