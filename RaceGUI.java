@@ -15,6 +15,7 @@ public class RaceGUI extends JFrame {
     private JButton resetButton;
 
     private JComboBox<String> comparatorBox;
+    private JComboBox<String> speedBox;
 
     public RaceGUI() {
 
@@ -199,17 +200,37 @@ public class RaceGUI extends JFrame {
                         20));
 
         String[] options = {
-                "Name",
-                "Rank",
-                "Score",
-                "Location"
+        "Name",
+        "Rank",
+        "Score",
+        "Location"
+};
+
+        String[] speedOptions = {
+                "Slow",
+                "Normal",
+                "Fast",
+                "Lightning"
         };
 
         comparatorBox =
                 new JComboBox<>(
                         options);
 
+        speedBox =
+                new JComboBox<>(
+                        speedOptions);
+
+        speedBox.setSelectedItem(
+                "Normal");
+
         comparatorBox.setFont(
+                new Font(
+                        "Arial",
+                        Font.BOLD,
+                        14));
+
+        speedBox.setFont(
                 new Font(
                         "Arial",
                         Font.BOLD,
@@ -224,10 +245,18 @@ public class RaceGUI extends JFrame {
 
         selectionPanel.add(
                 new JLabel(
-                        "Sort By:"));
+                "Sort By:"));
 
         selectionPanel.add(
                 comparatorBox);
+
+        selectionPanel.add(
+                new JLabel(
+                        "Race Speed:"));
+
+        selectionPanel.add(
+                speedBox);
+
 
         bottomPanel.add(
                 selectionPanel,
@@ -370,11 +399,14 @@ public class RaceGUI extends JFrame {
         }
     }
 
-        public void animateRace(
-                long builtInTime,
-                long mergeTime,
-                long insertionTime,
-                long bubbleTime) {
+     public void animateRace(
+        long builtInTime,
+        long mergeTime,
+        long insertionTime,
+        long bubbleTime,
+        int delay) {
+
+
 
         long maxTime =
                 Math.max(
@@ -424,7 +456,7 @@ public class RaceGUI extends JFrame {
 
                 try {
 
-                        Thread.sleep(40);
+                        Thread.sleep(delay);
 
                 } catch (InterruptedException e) {
 
@@ -441,6 +473,28 @@ public class RaceGUI extends JFrame {
                 comparatorBox.getSelectedItem();
                 }
 
+                public int getAnimationDelay() {
+
+                        String speed =
+                                (String)
+                                        speedBox.getSelectedItem();
+
+                        switch (speed) {
+
+                                case "Slow":
+                                return 80;
+
+                                case "Fast":
+                                return 20;
+
+                                case "Lightning":
+                                return 5;
+
+                                default:
+                                return 40;
+                        }
+                }
+                
                 public void resetRace() {
 
         resultsArea.setText("");

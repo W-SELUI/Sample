@@ -114,10 +114,11 @@ public class RaceAnimationDemo {
                             Collections.sort(results);
 
                             gui.animateRace(
-                                    builtIn.getExecutionTime(),
-                                    merge.getExecutionTime(),
-                                    insertion.getExecutionTime(),
-                                    bubble.getExecutionTime());
+                                builtIn.getExecutionTime(),
+                                merge.getExecutionTime(),
+                                insertion.getExecutionTime(),
+                                bubble.getExecutionTime(),
+                                gui.getAnimationDelay());
 
                             Thread.sleep(4500);
 
